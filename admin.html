@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0a0a0a"><title>Portfolio Admin — Phea Sokheng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#0a0a0a;--line:rgba(255,255,255,.14);--text:#f3efec;--muted:#8d8a87;--accent:#ff5a00;--gold:#ff5a00;--red:#ff7a6b;--green:#4ade80;
+--glass:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.03) 45%,rgba(255,120,40,.07)),rgba(20,18,16,.45);--hi:rgba(255,255,255,.34);
+--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;--sans:"Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(60vmax 40vmax at 0% 0%,rgba(255,90,0,.28),transparent 65%),radial-gradient(70vmax 40vmax at 100% 100%,rgba(255,90,0,.3),transparent 65%),radial-gradient(26vmax 26vmax at 80% 20%,rgba(255,90,0,.22),transparent 70%)}
+.wrap{max-width:1120px;margin:auto;padding:20px 22px 80px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:28px;padding:8px 10px 8px 20px;border-radius:999px;background:var(--glass);border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--hi),0 14px 34px -14px rgba(0,0,0,.6);-webkit-backdrop-filter:blur(22px) saturate(1.8);backdrop-filter:blur(22px) saturate(1.8);position:sticky;top:12px;z-index:20}
+.brand{font:500 .85rem var(--mono);letter-spacing:0}.brand::before{content:"// ";color:var(--muted)}.brand span{color:var(--accent)}.brand .muted{color:var(--muted)}
+.muted{color:var(--muted)}
+.panel{background:var(--glass);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:inset 0 1px 0 var(--hi),inset 0 0 24px rgba(255,255,255,.03),0 20px 50px -20px rgba(0,0,0,.7);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6)}
+.panel h2{font:600 1.35rem var(--sans);letter-spacing:-.02em}
+.auth{max-width:440px;margin:9vh auto}
+.h1{font:600 2rem/1.05 var(--sans);margin:0 0 8px;letter-spacing:-.03em}
+.sub{color:var(--muted);margin:0 0 24px}
+label{display:block;font:500 .78rem var(--mono);color:var(--muted);margin:16px 0 7px}
+input,textarea,select{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--line);border-radius:14px;color:var(--text);padding:12px 14px;font:inherit;box-shadow:inset 0 1px 3px rgba(0,0,0,.5)}
+input:focus,textarea:focus,select:focus{outline:2px solid rgba(255,90,0,.5);border-color:var(--accent)}
+textarea{min-height:100px;resize:vertical}
+.btn{min-height:44px;border:1px solid rgba(255,200,160,.7);border-radius:999px;padding:0 20px;background:linear-gradient(180deg,rgba(255,170,110,.95),var(--accent) 55%,#e04a00);color:#1a0a00;font:700 .8rem var(--mono);cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 26px -8px rgba(255,90,0,.65)}
+.btn:disabled{opacity:.5;cursor:wait}
+.btn.secondary{background:var(--glass);color:var(--text);border:1px solid var(--line);font-weight:500;box-shadow:inset 0 1px 0 var(--hi)}
+.btn.secondary:hover{border-color:rgba(255,150,80,.65)}
+.btn.danger{background:rgba(255,80,60,.12);color:#ffb3a6;border:1px solid rgba(255,100,80,.4);font-weight:500;box-shadow:none}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.full{width:100%;margin-top:22px}
+.hidden{display:none!important}
+.notice{margin-top:14px;padding:12px 14px;border-radius:14px;background:rgba(255,90,0,.1);border:1px solid rgba(255,120,50,.35);color:#ffd2b8;white-space:pre-wrap;font-size:.9rem}
+.notice.error{background:rgba(255,70,60,.12);border-color:rgba(255,100,80,.4);color:#ffb3a6}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:22px 0;flex-wrap:wrap}
+.stats{color:var(--muted);font:400 .78rem var(--mono)}
+.status{font:400 .72rem var(--mono);color:var(--green);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--glass)}
+.layout{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(0,1.5fr);gap:20px;align-items:start}
+.preview{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;background:#1a1a1a;margin-top:12px;border:1px solid var(--line)}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.item{border:1px solid var(--line);background:var(--glass);border-radius:20px;overflow:hidden;box-shadow:inset 0 1px 0 var(--hi)}
+.item img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;background:#1a1a1a}
+.itembody{padding:12px}.item h3{margin:0 0 4px;font:500 1rem var(--sans)}.item p{margin:0 0 12px;color:var(--accent);font:400 .72rem var(--mono)}
+.small{font-size:.8rem;color:var(--muted)}
+details{border:1px solid var(--line);border-radius:18px;padding:2px 16px 14px;margin-bottom:12px;background:rgba(0,0,0,.28)}
+summary{cursor:pointer;font-weight:600;padding:12px 0;list-style:none}summary::-webkit-details-marker{display:none}
+summary::after{content:"+";float:right;color:var(--accent);font-family:var(--mono)}details[open] summary::after{content:"–"}
+.erow{border:1px solid var(--line);border-radius:16px;padding:6px 14px 14px;margin:12px 0;background:rgba(255,255,255,.03)}
+.erow .row{margin-top:8px;justify-content:flex-end}
+.profile{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.avatarbox{width:110px;height:138px;border-radius:18px;object-fit:cover;background:#1a1a1a;border:1px solid var(--accent);box-shadow:0 0 0 4px rgba(255,90,0,.12)}
+.swrow{display:grid;grid-template-columns:72px 1fr;gap:6px 16px;align-items:start}
+.swlogo{width:64px;height:64px;border-radius:18px;object-fit:contain;background:#e9e9f0;display:grid;place-items:center;font:700 22px var(--sans);color:#111;overflow:hidden}.swlogo img{width:70%;height:70%;object-fit:contain}
+.pctrow{display:flex;gap:12px;align-items:center}.pctrow input[type=range]{padding:0;accent-color:var(--accent);box-shadow:none}.pctrow input[type=number]{width:90px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(hover:none){.panel,.top{-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.wrap{padding:14px 14px 60px}.panel{padding:18px}.top{padding-left:16px}}
+.pslots{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.pslot{border:1px solid var(--line,#2a2a2a);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.pslot h3{margin:0;font-size:1rem}.pslot .where{margin:0;font-size:.85rem;opacity:.7}
+.pslot .avatarbox{width:100%;max-width:200px;aspect-ratio:4/5;object-fit:cover;border-radius:12px}
+.pslot .row{flex-wrap:wrap}
+.cropmask{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;padding:16px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.cropbox{width:min(440px,100%);max-height:100%;overflow:auto;background:#141414;border:1px solid var(--line);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.cropbox h3{margin:0;font-size:1.05rem}.cropbox .hint{margin:0;font-size:.82rem;color:var(--muted)}
+.cropframe{position:relative;margin:0 auto;width:min(320px,100%);background:#0b0b0b;border-radius:14px;overflow:hidden;touch-action:none;cursor:grab;outline:1px solid var(--line)}
+.cropframe.drag{cursor:grabbing}
+.cropframe img{position:absolute;left:0;top:0;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none;transform-origin:0 0}
+.cropframe .grid{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 33.2%,rgba(255,255,255,.28) 33.3%,transparent 33.5%,transparent 66.5%,rgba(255,255,255,.28) 66.6%,transparent 66.8%),linear-gradient(transparent 33.2%,rgba(255,255,255,.28) 33.3%,transparent 33.5%,transparent 66.5%,rgba(255,255,255,.28) 66.6%,transparent 66.8%)}
+.cropframe .round{position:absolute;inset:0;pointer-events:none;border-radius:50%;box-shadow:0 0 0 999px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.6)}
+.zoomrow{display:flex;align-items:center;gap:10px}
+.zoomrow input[type=range]{flex:1;accent-color:var(--accent)}
+.zoomrow .zb{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--glass);color:var(--text);font-size:1.3rem;line-height:1;cursor:pointer}
+.cropbox .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+</style>
+</head><body><div class="wrap">
+<header class="top"><div class="brand">PHEA <span>SOKHENG</span> <span class="muted">/ ADMIN</span></div><button id="logout" class="btn secondary hidden">Sign out</button></header>
+<section id="loginPanel" class="panel auth"><h1 class="h1">Admin login</h1><p class="sub">Sign in to manage your portfolio artwork.</p><form id="loginForm"><label for="email">Email address</label><input id="email" type="email" autocomplete="username" required placeholder="you@example.com"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required placeholder="Your password"><button class="btn full" id="loginBtn">Sign in</button></form><div id="loginMsg" class="notice hidden" role="status"></div><p class="small">Accounts are created by the site owner in Supabase. Public visitors cannot register here.</p></section>
+<section id="dashboard" class="hidden"><div class="toolbar"><div><h1 class="h1">Artwork manager</h1><div class="stats" id="count">Loading your artwork…</div></div><span class="status">● Connected when signed in</span></div>
+<section class="panel" style="margin-bottom:20px"><h2 style="margin:0 0 6px">Profile images</h2><p class="sub" style="margin-bottom:16px">Three separate profile images, each shown in a different place on the website. They are saved in a <b>profile</b> folder in your storage. JPG, PNG or WebP, max 8 MB each. Image 2 and Image 3 use Image 1 until you set them.</p><div id="profileSlots" class="pslots"></div></section>
+<section class="panel" id="swPanel" style="margin-bottom:20px"><h2 style="margin:0 0 6px">Software skills</h2><p class="sub" style="margin-bottom:16px">Edit each software’s name, change the skill percent (%), replace its logo image (PNG, JPG or WebP, max 8 MB), reorder, remove, or add a new software. Press <b>Save software skills</b> to publish.</p><div id="swRows"><p class="muted">Loading…</p></div><div class="row" style="margin-top:14px"><button id="swAdd" class="btn secondary" type="button">+ Add software</button><button id="swSave" class="btn" type="button">Save software skills</button><button id="swReload" class="btn secondary" type="button">Discard changes</button></div><div id="swMsg" class="notice hidden" role="status"></div></section>
+<section class="panel" id="mqPanel" style="margin-bottom:20px"><h2 style="margin:0 0 6px">Orange banner text</h2><p class="sub" style="margin-bottom:16px">The moving orange strip on your website (Posters, Branding, Motion graphics…). Edit any word, add new ones, remove, or reorder. Press <b>Save banner text</b> to publish.</p><div id="mqRows"></div><div class="row" style="margin-top:14px"><button id="mqAdd" class="btn secondary" type="button">+ Add text</button><button id="mqSave" class="btn" type="button">Save banner text</button><button id="mqReset" class="btn secondary" type="button">Restore original words</button></div><div id="mqMsg" class="notice hidden" role="status"></div></section>
+<section class="panel" id="textPanel" style="margin-bottom:20px"><h2 style="margin:0 0 6px">Website text, experience &amp; education</h2><p class="sub" style="margin-bottom:16px">Edit any wording on your website. Open a group, change the text, then press Save. To go back to the original wording, clear a box and save.</p><div id="textForm"><p class="muted">Loading…</p></div><div class="row" style="margin-top:20px"><button id="textSave" class="btn" type="button">Save text changes</button><button id="textReload" class="btn secondary" type="button">Discard changes</button></div><div id="textMsg" class="notice hidden" role="status"></div></section>
+<div class="layout"><section class="panel"><h2 id="formTitle" style="margin:0 0 6px">Upload new artwork</h2><p class="sub">Choose an image and fill in the project details.</p><form id="artForm"><input id="artId" type="hidden"><label for="title">Artwork title *</label><input id="title" maxlength="120" required placeholder="e.g. Football Match Poster"><label for="category">Category *</label><input id="category" maxlength="60" required list="categories" placeholder="e.g. Football poster"><datalist id="categories"><option>Branding</option><option>Poster</option><option>Packaging</option><option>Editorial</option><option>Football poster</option><option>Football promotion</option><option>Football event</option><option>Football banner</option><option>Holiday poster</option><option>Motion graphics</option><option>AI generator</option></datalist><label for="year">Year</label><input id="year" type="number" min="2000" max="2100" value="2026"><label for="description">Description</label><textarea id="description" maxlength="1200" placeholder="Describe this project…"></textarea><label for="client">Client</label><input id="client" maxlength="120" placeholder="Client or Personal project"><label for="role">Role / Services</label><input id="role" maxlength="180" placeholder="Design, art direction, retouching"><label for="image">Artwork image <span class="small">(JPG, PNG, WebP; max 8 MB)</span></label><input id="image" type="file" accept="image/jpeg,image/png,image/webp"><img id="preview" class="preview hidden" alt="Artwork preview"><label style="display:flex;gap:10px;align-items:center;font-weight:500"><input id="published" type="checkbox" checked style="width:auto;accent-color:#ff5a00"> Show this artwork on public portfolio</label><div class="row" style="margin-top:20px"><button id="saveBtn" class="btn" type="submit">Upload artwork</button><button id="cancelEdit" class="btn secondary hidden" type="button">Cancel edit</button></div><div id="formMsg" class="notice hidden" role="status"></div></form></section>
+<section class="panel"><div class="row" style="justify-content:space-between;margin-bottom:16px"><h2 style="margin:0">Your artwork</h2><button id="refresh" class="btn secondary" type="button">Refresh</button></div><div id="artList" class="items"><p class="muted">Loading…</p></div></section></div></section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+// Use the same project URL and anon/publishable key as index.html. Do not paste a service_role key here.
+const SUPABASE_URL='https://rdjwmdivhawipfnleyys.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_9rEANyqBh7ipdPB7QbF_JQ_MD70JdF9';
+const ready=SUPABASE_URL.startsWith('https://')&&!SUPABASE_URL.includes('YOUR_')&&!SUPABASE_ANON_KEY.includes('YOUR_');
+const $=id=>document.getElementById(id);const loginPanel=$('loginPanel'),dashboard=$('dashboard');
+let sb=null, currentUser=null, editing=null, currentFile=null, oldStoragePath=null;
+function message(id,text,error=false){const el=$(id);el.textContent=text;el.classList.remove('hidden','error');if(error)el.classList.add('error')}
+function clearMessage(id){$(id).classList.add('hidden')}
+function safe(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+if(ready){sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);}
+else{message('loginMsg','Setup required: add your Supabase Project URL and anon/publishable key to admin.html.',true)}
+async function isAdmin(user){const {data,error}=await sb.from('admin_users').select('user_id').eq('user_id',user.id).maybeSingle();return !error&&!!data}
+async function showSession(user){if(user&&!(await isAdmin(user))){const uidTxt=user.id;await sb.auth.signOut();user=null;message('loginMsg','This account is not allowlisted as admin. In Supabase SQL Editor run: insert into public.admin_users (user_id) values (\''+uidTxt+'\');',true)}currentUser=user;loginPanel.classList.toggle('hidden',!!user);dashboard.classList.toggle('hidden',!user);$('logout').classList.toggle('hidden',!user);if(user){loadArtworks();loadProfile();loadText();}}
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();clearMessage('loginMsg');if(!sb)return;const btn=$('loginBtn');btn.disabled=true;btn.textContent='Signing in…';const {data,error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});btn.disabled=false;btn.textContent='Sign in';if(error){message('loginMsg',error.message,true);return;}showSession(data.user);});
+$('logout').onclick=async()=>{await sb.auth.signOut();showSession(null)};
+sb?.auth.getSession().then(({data})=>showSession(data.session?.user||null));
+sb?.auth.onAuthStateChange((_event,session)=>{if(!session)showSession(null)});
+$('image').addEventListener('change',()=>{currentFile=$('image').files[0]||null;const f=currentFile;if(!f){$('preview').classList.add('hidden');return;}if(!['image/jpeg','image/png','image/webp'].includes(f.type)||f.size>8*1024*1024){message('formMsg','Choose a JPG, PNG or WebP image no larger than 8 MB.',true);$('image').value='';currentFile=null;return;}clearMessage('formMsg');$('preview').src=URL.createObjectURL(f);$('preview').classList.remove('hidden')});
+function resetForm(){editing=null;currentFile=null;oldStoragePath=null;$('artForm').reset();$('artId').value='';$('year').value='2026';$('published').checked=true;$('preview').classList.add('hidden');$('image').value='';$('formTitle').textContent='Upload new artwork';$('saveBtn').textContent='Upload artwork';$('cancelEdit').classList.add('hidden');clearMessage('formMsg')}
+$('cancelEdit').onclick=resetForm;
+function uid(){return(window.crypto&&crypto.randomUUID)?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2,10)}
+function fileExt(file){return file.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg'}
+$('artForm').addEventListener('submit',async e=>{e.preventDefault();if(!sb||!currentUser)return;const btn=$('saveBtn');btn.disabled=true;btn.textContent='Saving…';clearMessage('formMsg');let storagePath=oldStoragePath,imageUrl=editing?.image_url||null;
+try{
+ if(currentFile){storagePath=`${currentUser.id}/${uid()}.${fileExt(currentFile)}`;const up=await sb.storage.from('artworks').upload(storagePath,currentFile,{cacheControl:'3600',upsert:false,contentType:currentFile.type});if(up.error)throw up.error;const pub=sb.storage.from('artworks').getPublicUrl(storagePath);imageUrl=pub.data.publicUrl;}
+ if(!imageUrl)throw new Error('Please select an artwork image.');
+ const record={title:$('title').value.trim(),category:$('category').value.trim(),year:Number($('year').value)||null,description:$('description').value.trim(),client:$('client').value.trim(),role:$('role').value.trim(),image_url:imageUrl,storage_path:storagePath,is_published:$('published').checked,updated_at:new Date().toISOString()};
+ let result;if(editing){result=await sb.from('artworks').update(record).eq('id',editing.id).select().single();}else{result=await sb.from('artworks').insert({...record,created_by:currentUser.id}).select().single();}
+ if(result.error)throw result.error;
+ if(currentFile&&oldStoragePath&&oldStoragePath!==storagePath){const rm=await sb.storage.from('artworks').remove([oldStoragePath]);if(rm.error)console.warn('Old image cleanup:',rm.error.message)}
+ const okText=editing?'Artwork updated successfully.':'Artwork uploaded successfully.';resetForm();message('formMsg',okText);await loadArtworks();
+}catch(err){message('formMsg',/row-level security|violates/i.test(err.message||'')?'Permission denied: this account is not in the admin_users table, or the SQL setup was not run.':(err.message||'Something went wrong.'),true);if(storagePath&&storagePath!==oldStoragePath&&currentFile)await sb.storage.from('artworks').remove([storagePath]);}
+finally{btn.disabled=false;btn.textContent=editing?'Save changes':'Upload artwork';}
+});
+async function loadArtworks(){if(!sb)return;$('artList').innerHTML='<p class="muted">Loading…</p>';const {data,error}=await sb.from('artworks').select('*').order('created_at',{ascending:false});if(error){$('artList').innerHTML=`<p class="muted">${safe(error.message)}</p>`;return;}$('count').textContent=`${data.length} artwork${data.length===1?'':'s'} in your library`;$('artList').innerHTML='';if(!data.length){$('artList').innerHTML='<p class="muted">No artwork yet. Upload your first project.</p>';return;}data.forEach(p=>{const card=document.createElement('article');card.className='item';card.innerHTML=`<img src="${safe(p.image_url)}" alt="${safe(p.title)}"><div class="itembody"><h3>${safe(p.title)}</h3><p>${safe(p.category)} · ${safe(p.year||'')}</p><p class="status">${p.is_published?'● Published':'○ Hidden'}</p><div class="row"><button class="btn secondary edit" type="button">Edit</button><button class="btn danger delete" type="button">Delete</button></div></div>`;card.querySelector('.edit').onclick=()=>editArtwork(p);card.querySelector('.delete').onclick=()=>deleteArtwork(p);$('artList').appendChild(card)});}
+function editArtwork(p){editing=p;oldStoragePath=p.storage_path;$('artId').value=p.id;$('title').value=p.title;$('category').value=p.category;$('year').value=p.year||2026;$('description').value=p.description||'';$('client').value=p.client||'';$('role').value=p.role||'';$('published').checked=!!p.is_published;$('image').value='';currentFile=null;$('preview').src=p.image_url;$('preview').classList.remove('hidden');$('formTitle').textContent='Edit artwork';$('saveBtn').textContent='Save changes';$('cancelEdit').classList.remove('hidden');clearMessage('formMsg');window.scrollTo({top:0,behavior:'smooth'});}
+async function deleteArtwork(p){if(!confirm(`Delete “${p.title}”? This cannot be undone.`))return;const {error}=await sb.from('artworks').delete().eq('id',p.id);if(error){alert(error.message);return;}if(p.storage_path){const rm=await sb.storage.from('artworks').remove([p.storage_path]);if(rm.error)console.warn(rm.error.message)}if(editing?.id===p.id)resetForm();await loadArtworks();}
+$('refresh').onclick=loadArtworks;
+/* ---- profile images (3 slots, stored in the "profile" folder) ---- */
+const PROFILE_FALLBACK='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><rect width="4" height="5" fill="#222"/></svg>');
+const PSLOTS=[
+ {n:1,key:'profile_image',pkey:'profile_image_path',label:'Image 1',where:'Website header (small round photo)'},
+ {n:2,key:'profile_image_2',pkey:'profile_image_2_path',label:'Image 2',where:'Hero section (big portrait at the top)'},
+ {n:3,key:'profile_image_3',pkey:'profile_image_3_path',label:'Image 3',where:'About section'}
+];
+const pFiles={},pPaths={},pUrls={};
+function buildProfileSlots(){
+ $('profileSlots').innerHTML=PSLOTS.map(o=>`<div class="pslot"><h3>${o.label}</h3><p class="where">${o.where}</p><img id="pPrev${o.n}" class="avatarbox" alt="${o.label} preview"><input id="pFile${o.n}" type="file" accept="image/jpeg,image/png,image/webp" class="hidden"><div class="row"><button id="pChoose${o.n}" class="btn secondary" type="button">Choose image</button><button id="pCrop${o.n}" class="btn secondary" type="button">Crop / zoom</button><button id="pSave${o.n}" class="btn" type="button" disabled>Change ${o.label}</button>${o.n>1?`<button id="pClear${o.n}" class="btn secondary" type="button">Use Image 1</button>`:''}</div><div id="pMsg${o.n}" class="notice hidden" role="status"></div></div>`).join('');
+ PSLOTS.forEach(wireSlot);
+}
+function slotPreview(o){return pUrls[o.key]||(o.n===3&&pUrls.profile_image_2)||pUrls.profile_image||PROFILE_FALLBACK}
+async function loadProfile(){
+ if(!sb)return;
+ if(!$('pPrev1'))buildProfileSlots();
+ const keys=PSLOTS.flatMap(o=>[o.key,o.pkey]);
+ const {data}=await sb.from('site_settings').select('key,value').in('key',keys);
+ const m={};(data||[]).forEach(r=>m[r.key]=r.value);
+ PSLOTS.forEach(o=>{pUrls[o.key]=m[o.key]||'';pPaths[o.n]=m[o.pkey]||null});
+ PSLOTS.forEach(o=>{if(!pFiles[o.n])$('pPrev'+o.n).src=slotPreview(o)});
+}
+function wireSlot(o){
+ const n=o.n,msg='pMsg'+n;
+ $('pChoose'+n).onclick=()=>$('pFile'+n).click();
+ $('pFile'+n).addEventListener('change',()=>{const f=$('pFile'+n).files[0];pFiles[n]=null;$('pSave'+n).disabled=true;if(!f)return;if(!['image/jpeg','image/png','image/webp'].includes(f.type)||f.size>8*1024*1024){message(msg,'Choose a JPG, PNG or WebP image no larger than 8 MB.',true);$('pFile'+n).value='';return;}clearMessage(msg);pFiles[n]=f;$('pPrev'+n).src=URL.createObjectURL(f);$('pSave'+n).disabled=false;openCropper(o,URL.createObjectURL(f))});
+ $('pCrop'+n).onclick=()=>{const src=pFiles[n]?URL.createObjectURL(pFiles[n]):slotPreview(o);if(src===PROFILE_FALLBACK){message(msg,'Choose an image first, then crop it.',true);return;}openCropper(o,src)};
+ $('pSave'+n).onclick=async()=>{
+  const file=pFiles[n];if(!sb||!currentUser||!file)return;
+  const btn=$('pSave'+n);btn.disabled=true;btn.textContent='Uploading…';clearMessage(msg);
+  const newPath=`${currentUser.id}/profile/image-${n}-${uid()}.${fileExt(file)}`;
+  try{
+   const up=await sb.storage.from('artworks').upload(newPath,file,{cacheControl:'3600',upsert:false,contentType:file.type});if(up.error)throw up.error;
+   const url=sb.storage.from('artworks').getPublicUrl(newPath).data.publicUrl;
+   const now=new Date().toISOString();
+   const r=await sb.from('site_settings').upsert([{key:o.key,value:url,updated_at:now},{key:o.pkey,value:newPath,updated_at:now}],{onConflict:'key'});
+   if(r.error){await sb.storage.from('artworks').remove([newPath]);throw r.error}
+   const old=pPaths[n];if(old&&old!==newPath){const rm=await sb.storage.from('artworks').remove([old]);if(rm.error)console.warn('Old profile cleanup:',rm.error.message)}
+   pPaths[n]=newPath;pUrls[o.key]=url;pFiles[n]=null;$('pFile'+n).value='';$('pPrev'+n).src=url;
+   message(msg,o.label+' changed. Refresh your website to see it.');
+  }catch(err){message(msg,/row-level security|violates/i.test(err.message||'')?'Permission denied: this account is not an admin.':(err.message||'Something went wrong.'),true);loadProfile()}
+  finally{btn.textContent='Change '+o.label;btn.disabled=!pFiles[n]}
+ };
+ const clr=$('pClear'+n);
+ if(clr)clr.onclick=async()=>{
+  if(!sb||!currentUser)return;if(!pUrls[o.key]){message(msg,o.label+' already uses Image 1.');return;}
+  if(!confirm(o.label+' will use Image 1 again. Continue?'))return;
+  clr.disabled=true;clearMessage(msg);
+  try{
+   const now=new Date().toISOString();
+   const r=await sb.from('site_settings').upsert([{key:o.key,value:'',updated_at:now},{key:o.pkey,value:'',updated_at:now}],{onConflict:'key'});if(r.error)throw r.error;
+   const old=pPaths[n];if(old){const rm=await sb.storage.from('artworks').remove([old]);if(rm.error)console.warn('Old profile cleanup:',rm.error.message)}
+   pPaths[n]=null;pUrls[o.key]='';pFiles[n]=null;$('pFile'+n).value='';$('pSave'+n).disabled=true;
+   PSLOTS.forEach(x=>{if(!pFiles[x.n])$('pPrev'+x.n).src=slotPreview(x)});
+   message(msg,o.label+' now uses Image 1.');
+  }catch(err){message(msg,err.message||'Something went wrong.',true)}
+  finally{clr.disabled=false}
+ };
+}
+
+/* ---- crop / zoom editor ---- */
+function openCropper(o,src){
+ const n=o.n,msg='pMsg'+n,AR=n===1?1:4/5,OUT=n===1?[512,512]:[960,1200];
+ const mask=document.createElement('div');mask.className='cropmask';
+ mask.innerHTML=`<div class="cropbox" role="dialog" aria-modal="true" aria-label="Crop ${o.label}"><h3>Crop ${o.label}</h3><p class="hint">Drag to move. Use the slider, − / + buttons, mouse wheel or pinch to zoom in or out.</p><div class="cropframe" id="cfFrame" style="aspect-ratio:${AR>=1?'1/1':'4/5'}"><img id="cfImg" alt="">${n===1?'<div class="round"></div>':'<div class="grid"></div>'}</div><div class="zoomrow"><button type="button" class="zb" id="cfOut" aria-label="Zoom out">−</button><input id="cfZoom" type="range" min="0" max="100" value="0" step="0.5" aria-label="Zoom"><button type="button" class="zb" id="cfIn" aria-label="Zoom in">+</button></div><div class="row"><button type="button" class="btn secondary" id="cfReset">Reset</button><button type="button" class="btn secondary" id="cfCancel">Cancel</button><button type="button" class="btn" id="cfApply" disabled>Apply crop</button></div></div>`;
+ document.body.appendChild(mask);
+ const q=id=>mask.querySelector('#'+id),fr=q('cfFrame'),im=q('cfImg'),zr=q('cfZoom'),ap=q('cfApply');
+ let iw=0,ih=0,fw=0,fh=0,sMin=1,sMax=4,s=1,x=0,y=0;
+ const clampPos=()=>{const w=iw*s,h=ih*s;x=w>=fw?Math.min(0,Math.max(fw-w,x)):Math.min(fw-w,Math.max(0,x));y=h>=fh?Math.min(0,Math.max(fh-h,y)):Math.min(fh-h,Math.max(0,y))};
+ const draw=()=>{clampPos();im.style.width=iw*s+'px';im.style.height=ih*s+'px';im.style.transform=`translate(${x}px,${y}px)`;zr.value=(Math.log(s/sMin)/Math.log(sMax/sMin))*100};
+ const setScale=(ns,cx,cy)=>{ns=Math.min(sMax,Math.max(sMin,ns));if(cx==null){cx=fw/2;cy=fh/2}const k=ns/s;x=cx-(cx-x)*k;y=cy-(cy-y)*k;s=ns;draw()};
+ const fit=()=>{const cover=Math.max(fw/iw,fh/ih);s=cover;x=(fw-iw*s)/2;y=(fh-ih*s)/2;draw()};
+ const close=()=>{mask.remove();document.removeEventListener('keydown',onKey)};
+ const onKey=e=>{if(e.key==='Escape')close()};document.addEventListener('keydown',onKey);
+ const loader=new Image();if(!src.startsWith('blob:')&&!src.startsWith('data:')){loader.crossOrigin='anonymous';src+=(src.includes('?')?'&':'?')+'cb='+Date.now()}
+ loader.onload=()=>{iw=loader.naturalWidth;ih=loader.naturalHeight;fw=fr.clientWidth;fh=fr.clientHeight;const contain=Math.min(fw/iw,fh/ih),cover=Math.max(fw/iw,fh/ih);sMin=contain;sMax=cover*4;im.src=loader.src;fit();ap.disabled=false};
+ loader.onerror=()=>{close();message(msg,'Could not open this image for cropping. Choose the image again from your computer, then crop it.',true)};
+ loader.src=src;
+ q('cfZoom').oninput=()=>setScale(sMin*Math.pow(sMax/sMin,zr.value/100));
+ q('cfIn').onclick=()=>setScale(s*1.15);q('cfOut').onclick=()=>setScale(s/1.15);q('cfReset').onclick=fit;
+ q('cfCancel').onclick=close;mask.addEventListener('pointerdown',e=>{if(e.target===mask)close()});
+ fr.addEventListener('wheel',e=>{e.preventDefault();const r=fr.getBoundingClientRect();setScale(s*(e.deltaY<0?1.08:1/1.08),e.clientX-r.left,e.clientY-r.top)},{passive:false});
+ const ptrs=new Map();let lastD=0;
+ fr.addEventListener('pointerdown',e=>{fr.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});fr.classList.add('drag');lastD=0});
+ fr.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;const pr=ptrs.get(e.pointerId);const dx=e.clientX-pr.x,dy=e.clientY-pr.y;ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===1){x+=dx;y+=dy;draw()}
+  else if(ptrs.size===2){const [a,b]=[...ptrs.values()],d=Math.hypot(a.x-b.x,a.y-b.y);if(lastD){const r=fr.getBoundingClientRect();setScale(s*d/lastD,(a.x+b.x)/2-r.left,(a.y+b.y)/2-r.top)}lastD=d}});
+ const up=e=>{ptrs.delete(e.pointerId);lastD=0;if(!ptrs.size)fr.classList.remove('drag')};
+ fr.addEventListener('pointerup',up);fr.addEventListener('pointercancel',up);
+ ap.onclick=()=>{
+  const c=document.createElement('canvas');c.width=OUT[0];c.height=OUT[1];const ctx=c.getContext('2d'),k=OUT[0]/fw;
+  ctx.imageSmoothingQuality='high';ctx.drawImage(loader,x*k,y*k,iw*s*k,ih*s*k);
+  c.toBlob(b=>{
+   if(!b){message(msg,'Could not crop this image. Try another file.',true);return}
+   const ext=b.type==='image/webp'?'webp':'jpg';
+   const f=new File([b],`image-${n}.${ext}`,{type:b.type});
+   pFiles[n]=f;$('pPrev'+n).src=URL.createObjectURL(f);$('pSave'+n).disabled=false;clearMessage(msg);message(msg,'Crop ready. Press “Change '+o.label+'” to save it.');close();
+  },'image/webp',0.92);
+ };
+}
+document.addEventListener('DOMContentLoaded',()=>{if($('profileSlots')&&!$('pPrev1'))buildProfileSlots()});
+
+/* ---- website text + education ---- */
+const FIELDS=[{"k": "name", "l": "Your name (header)", "g": "Header & hero", "d": "Phea Sokheng"}, {"k": "avail", "l": "Availability badge (top right)", "g": "Header & hero", "d": "Available from January"}, {"k": "eyebrow", "l": "Small label above title", "g": "Header & hero", "d": "Portfolio — 2026"}, {"k": "title1", "l": "Title line 1", "g": "Header & hero", "d": "Graphic"}, {"k": "title2", "l": "Title line 2 (gradient)", "g": "Header & hero", "d": "designer."}, {"k": "hero_strong", "l": "Intro — bold part", "g": "Header & hero", "d": "I make identities, posters, packaging and editorial layouts"}, {"k": "hero_rest", "l": "Intro — rest of the paragraph", "g": "Header & hero", "d": "for small brands, cultural venues and people with a point of view. Based in Phnom Penh, working worldwide."}, {"k": "cta1", "l": "Button 1 text", "g": "Header & hero", "d": "View my work"}, {"k": "cta2", "l": "Button 2 text", "g": "Header & hero", "d": "Hire me"}, {"k": "stat1_v", "l": "Stat 1 — big text", "g": "Header & hero", "d": "3 years"}, {"k": "stat1_l", "l": "Stat 1 — label", "g": "Header & hero", "d": "Design experience"}, {"k": "stat2_v", "l": "Stat 2 — big text", "g": "Header & hero", "d": "Phnom Penh"}, {"k": "stat2_l", "l": "Stat 2 — label", "g": "Header & hero", "d": "Based in Cambodia"}, {"k": "stat3_v", "l": "Stat 3 — big text", "g": "Header & hero", "d": "Jan"}, {"k": "stat3_l", "l": "Stat 3 — label", "g": "Header & hero", "d": "Open for new projects"}, {"k": "work_title", "l": "Section title: work", "g": "Work & About", "d": "Selected work"}, {"k": "about_title", "l": "About title", "g": "Work & About", "d": "Clear ideas, bold shapes."}, {"k": "about_p1", "l": "About paragraph 1", "g": "Work & About", "d": "I’ve spent eight years designing for cafés, festivals, publishers and start-ups. I start with a simple question: what should someone feel in the first second? Then I build the system that keeps that feeling consistent on a sign, a bag and a screen."}, {"k": "about_p2", "l": "About paragraph 2", "g": "Work & About", "d": "I work directly with each client, from first sketch to final files."}, {"k": "exp_title", "l": "Experience title", "g": "Experience", "d": "Work experience"}, {"k": "years", "l": "Big years text", "g": "Experience", "d": "3 years"}, {"k": "years_label", "l": "Years description", "g": "Experience", "d": "Football posters, motion graphics, Design banner and Icon Website, and AI generator"}, {"k": "about_skill1_t", "l": "About skill 1 — title", "g": "Work & About", "d": "Brand identity"}, {"k": "about_skill1_d", "l": "About skill 1 — description", "g": "Work & About", "d": "Logo, color, type, guidelines"}, {"k": "about_skill2_t", "l": "About skill 2 — title", "g": "Work & About", "d": "Print & poster"}, {"k": "about_skill2_d", "l": "About skill 2 — description", "g": "Work & About", "d": "Event, campaign, large format"}, {"k": "about_skill3_t", "l": "About skill 3 — title", "g": "Work & About", "d": "Packaging"}, {"k": "about_skill3_d", "l": "About skill 3 — description", "g": "Work & About", "d": "Labels, boxes, bags"}, {"k": "about_skill4_t", "l": "About skill 4 — title", "g": "Work & About", "d": "Editorial"}, {"k": "about_skill4_d", "l": "About skill 4 — description", "g": "Work & About", "d": "Magazines, books, reports"}, {"k": "process_title", "l": "Section title", "g": "How I work", "d": "How I work"}, {"k": "step1_t", "l": "Step 1 — title", "g": "How I work", "d": "Brief"}, {"k": "step1_d", "l": "Step 1 — description", "g": "How I work", "d": "We talk through your goal, audience, deadline and the feeling you want people to get."}, {"k": "step2_t", "l": "Step 2 — title", "g": "How I work", "d": "Concept"}, {"k": "step2_d", "l": "Step 2 — description", "g": "How I work", "d": "I sketch directions and share the strongest ideas for your feedback."}, {"k": "step3_t", "l": "Step 3 — title", "g": "How I work", "d": "Design"}, {"k": "step3_d", "l": "Step 3 — description", "g": "How I work", "d": "The chosen idea is refined into polished layouts, type, colour and details."}, {"k": "step4_t", "l": "Step 4 — title", "g": "How I work", "d": "Delivery"}, {"k": "step4_d", "l": "Step 4 — description", "g": "How I work", "d": "You receive print-ready and web-ready files, organised and easy to use."}, {"k": "software_title", "l": "Software section title", "g": "Skills, contact & footer", "d": "Software skills"}, {"k": "software_hint", "l": "Software hint text", "g": "Skills, contact & footer", "d": "Tap an app to replay its skill level."}, {"k": "contact_title", "l": "Contact title", "g": "Skills, contact & footer", "d": "Have a project?"}, {"k": "email", "l": "Email address", "g": "Skills, contact & footer", "d": "pheasokheng669@gmail.com"}, {"k": "tg_url", "l": "Telegram link (full https:// URL)", "g": "Skills, contact & footer", "d": "https://t.me/HengZzyy"}, {"k": "tg_label", "l": "Telegram button text", "g": "Skills, contact & footer", "d": "Telegram @HengZzyy"}, {"k": "phone_tel", "l": "Phone number for calling (e.g. +855964842270)", "g": "Skills, contact & footer", "d": "+855964842270"}, {"k": "phone_label", "l": "Phone button text", "g": "Skills, contact & footer", "d": "Call 096 484 2270"}, {"k": "footer", "l": "Footer text", "g": "Skills, contact & footer", "d": "© 2026 Phea Sokheng. Available for new projects from January."}, {"k": "edu_title", "l": "Education section title", "g": "Education", "d": "Education"}];
+const EXP_FIELDS=[['company','Workplace / company *'],['period','Period (e.g. 2024-2025)'],['role','Position (e.g. Graphic Designer and Editing)'],['note','Extra note (optional)']];
+const EXP_DEFAULT=[{"period": "2024-2025", "company": "Intern Worldtech Computer", "role": "Graphic Designer and Editing", "note": ""}, {"period": "2025-2026", "company": "Printing House", "role": "Graphic Designer and Printer", "note": ""}, {"period": "2026-Present", "company": "Football Website", "role": "Designer & Motion Graphics.", "note": ""}];
+const EDU_FIELDS=[['period','Period (e.g. 2018 – 2022)'],['school','School / institution *'],['degree','Degree / course'],['note','Notes (optional)']];
+let textSaved={},eduRows=[],expRows=[];
+/* ---- software skills ---- */
+const SW_DEFAULT=[{id:'ps',name:'Adobe Photoshop',pct:85},{id:'pr',name:'Adobe Premiere Pro',pct:70},{id:'ae',name:'Adobe After Effects',pct:75},{id:'ai',name:'Adobe Illustrator',pct:70},{id:'corel',name:'CorelDRAW',pct:65},{id:'capcut',name:'CapCut',pct:75},{id:'blender',name:'Blender',pct:50}];
+const SW_BADGE={ps:['#001E36','#31A8FF','Ps'],pr:['#00005B','#9999FF','Pr'],ae:['#00005B','#D291FF','Ae'],ai:['#330000','#FF9A00','Ai'],corel:['#E9E9F0','#2a7d3f','Co'],capcut:['#E9E9F0','#111','Cc'],blender:['#E9E9F0','#e87d0d','Bl']};
+let swRows=[];
+function swNorm(r){return {id:r.id||'',name:r.name||'',pct:Math.max(0,Math.min(100,Math.round(Number(r.pct))||0)),logo:r.logo||'',logo_path:r.logo_path||''}}
+function swPreview(r,el){el.innerHTML='';if(r._preview||r.logo){const im=document.createElement('img');im.src=r._preview||r.logo;im.alt='';el.style.background='#e9e9f0';el.style.color='#111';el.appendChild(im)}else{const b=SW_BADGE[r.id]||['#1c1c24','#ff5a00',(r.name||'?').slice(0,2)];el.style.background=b[0];el.style.color=b[1];el.textContent=b[2]}}
+function renderSw(){
+ const box=$('swRows');if(!box)return;box.innerHTML='';
+ swRows.forEach((r,i)=>{const w=document.createElement('div');w.className='erow';const g=document.createElement('div');g.className='swrow';
+  const logo=document.createElement('div');logo.className='swlogo';swPreview(r,logo);g.appendChild(logo);
+  const f=document.createElement('div');
+  const l1=document.createElement('label');l1.textContent='Software name *';const n=document.createElement('input');n.maxLength=60;n.value=r.name;n.oninput=()=>{r.name=n.value;if(!r._preview&&!r.logo&&!SW_BADGE[r.id])swPreview(r,logo)};
+  const l2=document.createElement('label');l2.textContent='Skill level (%)';const pr=document.createElement('div');pr.className='pctrow';
+  const rg=document.createElement('input');rg.type='range';rg.min=0;rg.max=100;rg.value=r.pct;const nb=document.createElement('input');nb.type='number';nb.min=0;nb.max=100;nb.value=r.pct;
+  rg.oninput=()=>{r.pct=Number(rg.value);nb.value=rg.value};nb.oninput=()=>{let v=Math.max(0,Math.min(100,Math.round(Number(nb.value))||0));r.pct=v;rg.value=v};pr.append(rg,nb);
+  const file=document.createElement('input');file.type='file';file.accept='image/jpeg,image/png,image/webp';file.className='hidden';
+  file.onchange=()=>{const x=file.files[0];if(!x)return;if(!['image/jpeg','image/png','image/webp'].includes(x.type)||x.size>8*1024*1024){message('swMsg','Choose a JPG, PNG or WebP logo no larger than 8 MB.',true);file.value='';return}clearMessage('swMsg');r._file=x;r._preview=URL.createObjectURL(x);swPreview(r,logo)};
+  const row=document.createElement('div');row.className='row';row.style.justifyContent='flex-start';
+  const ch=document.createElement('button');ch.type='button';ch.className='btn secondary';ch.textContent=(r.logo||r._preview)?'Replace logo':'Add logo';ch.onclick=()=>file.click();
+  const rs=document.createElement('button');rs.type='button';rs.className='btn secondary';rs.textContent='Use default logo';rs.onclick=()=>{if(r.logo_path)r._oldPath=r._oldPath||r.logo_path;r.logo='';r.logo_path='';r._file=null;r._preview='';renderSw()};
+  if(r.logo||r._preview)row.append(ch,rs);else row.append(ch);
+  const row2=document.createElement('div');row2.className='row';
+  const up=document.createElement('button');up.type='button';up.className='btn secondary';up.textContent='↑';up.disabled=i===0;up.onclick=()=>{[swRows[i-1],swRows[i]]=[swRows[i],swRows[i-1]];renderSw()};
+  const dn=document.createElement('button');dn.type='button';dn.className='btn secondary';dn.textContent='↓';dn.disabled=i===swRows.length-1;dn.onclick=()=>{[swRows[i+1],swRows[i]]=[swRows[i],swRows[i+1]];renderSw()};
+  const rm=document.createElement('button');rm.type='button';rm.className='btn danger';rm.textContent='Remove';rm.onclick=()=>{if(r.logo_path)swTrash.push(r.logo_path);if(r._oldPath)swTrash.push(r._oldPath);swRows.splice(i,1);renderSw()};
+  row2.append(up,dn,rm);
+  f.append(l1,n,l2,pr,row,file,row2);g.appendChild(f);w.appendChild(g);box.appendChild(w)});
+}
+let swTrash=[];
+
+function addField(box,f){const long=f.d.length>80;const lab=document.createElement('label');lab.textContent=f.l;lab.htmlFor='tf_'+f.k;const el=document.createElement(long?'textarea':'input');el.id='tf_'+f.k;if(long)el.rows=Math.min(6,Math.ceil(f.d.length/70));el.maxLength=1200;box.append(lab,el)}
+function buildTextForm(){
+ const root=$('textForm');root.innerHTML='';const groups={};
+ FIELDS.forEach(f=>{(groups[f.g]=groups[f.g]||[]).push(f)});
+ Object.keys(groups).forEach((g,gi)=>{
+  const d=document.createElement('details');if(gi===0)d.open=true;const sm=document.createElement('summary');sm.textContent=g;d.appendChild(sm);
+  groups[g].forEach(f=>addField(d,f));
+  if(g==='Experience'){const hint=document.createElement('p');hint.className='small';hint.style.marginTop='16px';hint.textContent='Add your workplaces. Each one shows on your website as a box: “• Workplace Period” and “- Position” underneath.';const list=document.createElement('div');list.id='expRows';const add=document.createElement('button');add.type='button';add.className='btn secondary';add.textContent='+ Add work experience';add.style.marginTop='8px';add.onclick=()=>{expRows.push({company:'',period:'',role:'',note:''});renderExp()};d.append(hint,list,add)}
+  if(g==='Education'){const hint=document.createElement('p');hint.className='small';hint.style.marginTop='16px';hint.textContent='Add your schools, courses or certificates. The Education section appears on your website only when you add at least one entry.';const list=document.createElement('div');list.id='eduRows';const add=document.createElement('button');add.type='button';add.className='btn secondary';add.textContent='+ Add education';add.style.marginTop='8px';add.onclick=()=>{eduRows.push({period:'',school:'',degree:'',note:''});renderEdu()};d.append(hint,list,add)}
+  root.appendChild(d)});
+}
+function renderExp(){
+ const box=$('expRows');if(!box)return;box.innerHTML='';
+ expRows.forEach((r,i)=>{const w=document.createElement('div');w.className='erow';
+  EXP_FIELDS.forEach(([k,l])=>{const lab=document.createElement('label');lab.textContent=l;const inp=document.createElement(k==='note'?'textarea':'input');if(k==='note')inp.rows=2;inp.maxLength=300;inp.value=r[k]||'';inp.oninput=()=>{r[k]=inp.value};w.append(lab,inp)});
+  const row=document.createElement('div');row.className='row';
+  const up=document.createElement('button');up.type='button';up.className='btn secondary';up.textContent='↑ Move up';up.disabled=i===0;up.onclick=()=>{[expRows[i-1],expRows[i]]=[expRows[i],expRows[i-1]];renderExp()};
+  const dn=document.createElement('button');dn.type='button';dn.className='btn secondary';dn.textContent='↓ Move down';dn.disabled=i===expRows.length-1;dn.onclick=()=>{[expRows[i+1],expRows[i]]=[expRows[i],expRows[i+1]];renderExp()};
+  const rm=document.createElement('button');rm.type='button';rm.className='btn danger';rm.textContent='Remove';rm.onclick=()=>{expRows.splice(i,1);renderExp()};
+  row.append(up,dn,rm);w.appendChild(row);box.appendChild(w)});
+}
+function renderEdu(){
+ const box=$('eduRows');box.innerHTML='';
+ eduRows.forEach((r,i)=>{const w=document.createElement('div');w.className='erow';
+  EDU_FIELDS.forEach(([k,l])=>{const lab=document.createElement('label');lab.textContent=l;const inp=document.createElement(k==='note'?'textarea':'input');if(k==='note')inp.rows=2;inp.maxLength=300;inp.value=r[k]||'';inp.oninput=()=>{r[k]=inp.value};w.append(lab,inp)});
+  const row=document.createElement('div');row.className='row';const rm=document.createElement('button');rm.type='button';rm.className='btn danger';rm.textContent='Remove';rm.onclick=()=>{eduRows.splice(i,1);renderEdu()};row.appendChild(rm);w.appendChild(row);box.appendChild(w)});
+}
+async function loadText(){
+ if(!sb)return;buildTextForm();
+ const {data,error}=await sb.from('site_settings').select('key,value');
+ if(error){message('textMsg','Could not load text: '+error.message,true);return}
+ textSaved={};(data||[]).forEach(r=>{textSaved[r.key]=r.value});
+ FIELDS.forEach(f=>{const el=$('tf_'+f.k);if(el)el.value=textSaved['c.'+f.k]||f.d});
+ try{eduRows=JSON.parse(textSaved.education||'[]');if(!Array.isArray(eduRows))eduRows=[]}catch(e){eduRows=[]}
+ eduRows=eduRows.map(r=>({period:r.period||'',school:r.school||'',degree:r.degree||'',note:r.note||''}));renderEdu();
+ try{expRows=textSaved.experience===undefined?EXP_DEFAULT.map(x=>({...x})):JSON.parse(textSaved.experience||'[]');if(!Array.isArray(expRows))expRows=[]}catch(e){expRows=[]}
+ expRows=expRows.map(r=>({period:r.period||'',role:r.role||'',company:r.company||'',note:r.note||''}));renderExp();
+ try{swRows=textSaved.software===undefined?SW_DEFAULT.map(x=>({...x,logo:'',logo_path:''})):JSON.parse(textSaved.software||'[]');if(!Array.isArray(swRows))swRows=[]}catch(e){swRows=[]}
+ swRows=swRows.map(swNorm);swTrash=[];renderSw();
+ mqLoad();
+}
+$('textReload').onclick=()=>{clearMessage('textMsg');loadText()};
+$('textSave').onclick=async()=>{
+ if(!sb||!currentUser)return;const btn=$('textSave');btn.disabled=true;btn.textContent='Saving…';clearMessage('textMsg');
+ try{
+  const now=new Date().toISOString(),rows=[];
+  FIELDS.forEach(f=>{const el=$('tf_'+f.k);if(!el)return;const v=el.value.trim();const store=(v===''||v===f.d)?'':v;if(store!==(textSaved['c.'+f.k]||''))rows.push({key:'c.'+f.k,value:store,updated_at:now})});
+  const edu=JSON.stringify(eduRows.filter(r=>(r.school||'').trim()).map(r=>({period:r.period.trim(),school:r.school.trim(),degree:r.degree.trim(),note:r.note.trim()})));
+  const exp=JSON.stringify(expRows.filter(r=>(r.company||'').trim()||(r.role||'').trim()).map(r=>({company:r.company.trim(),period:r.period.trim(),role:r.role.trim(),note:r.note.trim()})));
+  if(exp!==(textSaved.experience||'[]'))rows.push({key:'experience',value:exp,updated_at:now});
+  if(edu!==(textSaved.education||'[]'))rows.push({key:'education',value:edu,updated_at:now});
+  const newUploads=[];
+  try{
+   for(const r of swRows){if(r._file){const p=`${currentUser.id}/software-${uid()}.${fileExt(r._file)}`;const up=await sb.storage.from('artworks').upload(p,r._file,{cacheControl:'3600',upsert:false,contentType:r._file.type});if(up.error)throw up.error;newUploads.push(p);if(r.logo_path)swTrash.push(r.logo_path);if(r._oldPath)swTrash.push(r._oldPath);r.logo_path=p;r.logo=sb.storage.from('artworks').getPublicUrl(p).data.publicUrl;r._oldPath=null;r._file=null;r._preview=''}else if(r._oldPath){swTrash.push(r._oldPath);r._oldPath=null}}
+  }catch(e){if(newUploads.length)await sb.storage.from('artworks').remove(newUploads);throw e}
+  const clean=swRows.map(swNorm).filter(r=>r.name.trim()).map(r=>({...r,name:r.name.trim()}));
+  const swJson=JSON.stringify(clean);
+  const swBase=textSaved.software===undefined?JSON.stringify(SW_DEFAULT.map(x=>({...x,logo:'',logo_path:''}))):textSaved.software;
+  if(swJson!==swBase)rows.push({key:'software',value:swJson,updated_at:now});
+  if(!rows.length){message('textMsg','No changes to save.');return}
+  const r=await sb.from('site_settings').upsert(rows,{onConflict:'key'});if(r.error)throw r.error;
+  rows.forEach(x=>{textSaved[x.key]=x.value});
+  if(swTrash.length){const rm=await sb.storage.from('artworks').remove(swTrash);if(rm.error)console.warn('Old logo cleanup:',rm.error.message);swTrash=[]}
+  renderSw();
+  message('textMsg','Saved '+rows.length+' change'+(rows.length===1?'':'s')+'. Refresh your website to see them.');
+ }catch(err){message('textMsg',/row-level security|violates/i.test(err.message||'')?'Permission denied: this account is not an admin.':(err.message||'Something went wrong.'),true)}
+ finally{btn.disabled=false;btn.textContent='Save text changes'}
+};
+
+/* ---- software skills panel actions ---- */
+$('swAdd').onclick=()=>{swRows.push({id:'',name:'',pct:50,logo:'',logo_path:''});renderSw();const last=$('swRows').lastElementChild;if(last){last.scrollIntoView({behavior:'smooth',block:'center'});const i=last.querySelector('input');if(i)i.focus()}};
+$('swReload').onclick=()=>{clearMessage('swMsg');loadText()};
+$('swSave').onclick=async()=>{
+ if(!sb||!currentUser)return;const btn=$('swSave');btn.disabled=true;btn.textContent='Saving…';clearMessage('swMsg');
+ const newUploads=[];
+ try{
+  const now=new Date().toISOString();
+  try{
+   for(const r of swRows){if(r._file){const p=`${currentUser.id}/software-${uid()}.${fileExt(r._file)}`;const up=await sb.storage.from('artworks').upload(p,r._file,{cacheControl:'3600',upsert:false,contentType:r._file.type});if(up.error)throw up.error;newUploads.push(p);if(r.logo_path)swTrash.push(r.logo_path);if(r._oldPath)swTrash.push(r._oldPath);r.logo_path=p;r.logo=sb.storage.from('artworks').getPublicUrl(p).data.publicUrl;r._oldPath=null;r._file=null;r._preview=''}else if(r._oldPath){swTrash.push(r._oldPath);r._oldPath=null}}
+  }catch(e){if(newUploads.length)await sb.storage.from('artworks').remove(newUploads);throw e}
+  const clean=swRows.map(swNorm).filter(r=>r.name.trim()).map(r=>({...r,name:r.name.trim()}));
+  const swJson=JSON.stringify(clean);
+  const swBase=textSaved.software===undefined?JSON.stringify(SW_DEFAULT.map(x=>({...x,logo:'',logo_path:''}))):textSaved.software;
+  if(swJson===swBase){message('swMsg','No changes to save.');return}
+  const r=await sb.from('site_settings').upsert([{key:'software',value:swJson,updated_at:now}],{onConflict:'key'});
+  if(r.error){if(newUploads.length)await sb.storage.from('artworks').remove(newUploads);throw r.error}
+  textSaved.software=swJson;
+  if(swTrash.length){const rm=await sb.storage.from('artworks').remove(swTrash);if(rm.error)console.warn('Old logo cleanup:',rm.error.message);swTrash=[]}
+  renderSw();
+  message('swMsg','Software skills saved. Refresh your website to see them.');
+ }catch(err){message('swMsg',/row-level security|violates/i.test(err.message||'')?'Permission denied: this account is not an admin.':(err.message||'Something went wrong.'),true)}
+ finally{btn.disabled=false;btn.textContent='Save software skills'}
+};
+
+/* ---- orange banner (marquee) text ---- */
+const MQ_DEFAULT=['Posters','Branding','Motion graphics','Football visuals','AI visuals'];
+let mqItems=MQ_DEFAULT.slice();
+function mqLoad(){let a=null;try{a=JSON.parse(textSaved.marquee||'null')}catch(e){}mqItems=(Array.isArray(a)&&a.length)?a.map(x=>String(x)):MQ_DEFAULT.slice();mqRender()}
+function mqRender(){
+ const box=$('mqRows');box.innerHTML='';
+ mqItems.forEach((t,i)=>{
+  const row=document.createElement('div');row.className='row';row.style.cssText='margin-bottom:8px;flex-wrap:nowrap;align-items:center';
+  const inp=document.createElement('input');inp.type='text';inp.maxLength=40;inp.value=t;inp.style.flex='1';inp.setAttribute('aria-label','Banner text '+(i+1));inp.oninput=()=>{mqItems[i]=inp.value};
+  const up=document.createElement('button');up.type='button';up.className='btn secondary';up.textContent='↑';up.disabled=i===0;up.onclick=()=>{[mqItems[i-1],mqItems[i]]=[mqItems[i],mqItems[i-1]];mqRender()};
+  const dn=document.createElement('button');dn.type='button';dn.className='btn secondary';dn.textContent='↓';dn.disabled=i===mqItems.length-1;dn.onclick=()=>{[mqItems[i+1],mqItems[i]]=[mqItems[i],mqItems[i+1]];mqRender()};
+  const rm=document.createElement('button');rm.type='button';rm.className='btn danger';rm.textContent='Remove';rm.onclick=()=>{mqItems.splice(i,1);mqRender()};
+  row.append(inp,up,dn,rm);box.appendChild(row)});
+}
+$('mqAdd').onclick=()=>{mqItems.push('');mqRender();const l=$('mqRows').lastElementChild;if(l)l.querySelector('input').focus()};
+$('mqReset').onclick=()=>{if(!confirm('Restore the original banner words? Press Save banner text afterwards to publish.'))return;mqItems=MQ_DEFAULT.slice();mqRender()};
+$('mqSave').onclick=async()=>{
+ if(!sb||!currentUser)return;const btn=$('mqSave');btn.disabled=true;btn.textContent='Saving…';clearMessage('mqMsg');
+ try{
+  const clean=mqItems.map(x=>x.trim()).filter(Boolean);
+  if(!clean.length){message('mqMsg','Add at least one text, or press “Restore original words”.',true);return}
+  const val=JSON.stringify(clean);
+  if(val===(textSaved.marquee||JSON.stringify(MQ_DEFAULT))){message('mqMsg','No changes to save.');return}
+  const r=await sb.from('site_settings').upsert([{key:'marquee',value:val,updated_at:new Date().toISOString()}],{onConflict:'key'});if(r.error)throw r.error;
+  textSaved.marquee=val;mqItems=clean;mqRender();
+  message('mqMsg','Banner text saved. Refresh your website to see it.');
+ }catch(err){message('mqMsg',/row-level security|violates/i.test(err.message||'')?'Permission denied: this account is not an admin.':(err.message||'Something went wrong.'),true)}
+ finally{btn.disabled=false;btn.textContent='Save banner text'}
+};
+mqRender();
+</script></body></html>
